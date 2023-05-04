@@ -16,13 +16,37 @@ const authenticatedUser = (username,password)=>{ //returns boolean
 //only registered users can login
 regd_users.post("/login", (req,res) => {
   //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+  console.log('users: ', users)
+  const username = req.query.username;
+  const password = req.query.password;
+    if (!username) {
+        return res.status(404).json({message: "Body Empty"});
+    }
+    if (users.some(elem => (elem.username==username && elem.password==password))){
+        let accessToken = jwt.sign({
+            data: username
+          }, 'access', { expiresIn: 60 * 60 });
+          req.session.authorization = {
+            accessToken
+        }
+        return res.status(300).json({message: "You are logged in"});
+    }
+    else{
+        return res.status(404).json({message: "user not valid"});
+    }
 });
 
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
   //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+  isbn = req.params.isbn
+  review = req.params.review
+  user = req.user.data
+  //console.log(req.session.authorization)
+  text = `Review for ISBN ${isbn} is added by user: ${user}`;
+  console.log(text);
+
+  return res.status(300).json({message: text});
 });
 
 module.exports.authenticated = regd_users;
