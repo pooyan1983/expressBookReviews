@@ -39,13 +39,23 @@ regd_users.post("/login", (req,res) => {
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
   //Write your code here
-  isbn = req.params.isbn
-  review = req.params.review
-  user = req.user.data
+  isbn = req.params.isbn;
+  review = req.params.review;
+  user = req.user.data;
   //console.log(req.session.authorization)
+  books[isbn]['reviews'][user] = review;
   text = `Review for ISBN ${isbn} is added by user: ${user}`;
   console.log(text);
+  return res.status(300).json({message: text});
+});
 
+regd_users.delete("/auth/review/:isbn", (req, res) => {
+  isbn = req.params.isbn;
+  review = req.params.review;
+  user = req.user.data;
+  delete books[isbn]['reviews'][user];
+  text = `Review for ISBN ${isbn} is deleted by user: ${user}`;
+  console.log(text);
   return res.status(300).json({message: text});
 });
 
