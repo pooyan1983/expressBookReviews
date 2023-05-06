@@ -39,44 +39,57 @@ public_users.get('/',function (req, res) {
 // Get book details based on ISBN
 public_users.get('/isbn/:isbn',function (req, res) {
   //Write your code here
-  isbn = req.params.isbn
-  
-  return res.status(300).json({message: books[isbn]});
- });
+  let myPromise = new Promise((resolve, reject) => {
+    isbn = req.params.isbn
+    resolve(isbn)
+    });
+
+  myPromise.then((isbn)  => {
+    return res.status(300).json({message: books[isbn]});
+  }
+ )});
   
 // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
   //Write your code here
-  author = req.params.author
-  isbns = Object.keys(books)
-  var book = "";
-  
-  for (isbn in isbns){
-      console.log(isbns[isbn])
-      if (books[isbns[isbn]]["author"] == author){
-          book = books[isbns[isbn]];
-      }
-  } 
-  
-  
-  return res.status(300).json({message: book});
+  let myPromise = new Promise((resolve, reject) => {
+    author = req.params.author;
+    resolve(author);
+    });
+
+  myPromise.then((author)  => {
+    isbns = Object.keys(books)
+    var book = "";
+    for (isbn in isbns){
+        console.log(isbns[isbn])
+        if (books[isbns[isbn]]["author"] == author){
+            book = books[isbns[isbn]];
+        }
+    } 
+    return res.status(300).json({message: book});
+    }
+    )
 });
 
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
   //Write your code here
-  title = req.params.title
-  isbns = Object.keys(books)
-  var book = "";
-  
-  for (isbn in isbns){
-      if (books[isbns[isbn]]["title"] == title){
-          book = books[isbns[isbn]];
-      }
-  } 
-  
-  
-  return res.status(300).json({message: book});
+  let myPromise = new Promise((resolve, reject) => {
+    title = req.params.title;
+    resolve(title);
+    });
+
+  myPromise.then((title)  => {
+    isbns = Object.keys(books)
+    var book = "";
+    for (isbn in isbns){
+        if (books[isbns[isbn]]["title"] == title){
+            book = books[isbns[isbn]];
+        }
+    } 
+    return res.status(300).json({message: book});
+    }
+    )
 });
 
 //  Get book review
